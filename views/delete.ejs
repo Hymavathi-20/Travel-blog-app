@@ -1,0 +1,8 @@
+<%- include("partials/header.ejs") %>
+<h1 class="title">Delete Blog</h1>
+<form action="/deleteBlog"  method="POST">
+    <label>Name:</label><input type="text" name="name" placeholder="Name of Blog"><br>
+    <!-- <label>Description:</label><input type="text" name="description" placeholder="Desciption of Blog"><br> -->
+    <button type="submit" value="Create">Delete</button>
+</form>
+<%- include("partials/footer.ejs") %>

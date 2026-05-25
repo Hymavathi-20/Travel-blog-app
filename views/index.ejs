@@ -1,0 +1,13 @@
+<%- include("partials/header.ejs") %>
+<h1 class="title">View Blogs</h1>
+<div class="blogs">
+    <ol>
+        <% blogs.forEach((blog)=>{ %>
+            <li>
+                <h4> <%= blog["name"] %> </h4>
+                <p> <%= blog["description"] %></p>    
+            </li>
+        <% }) %>
+    </ol>
+</div>
+<%- include("partials/footer.ejs") %>
