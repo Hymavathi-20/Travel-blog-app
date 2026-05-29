@@ -180,5 +180,5 @@ app.post("/getWeather", async(req,res)=>{
 
 // Start server
 app.listen(port,(req,res)=>{
-    console.log(`Server is rumming on port ${port}`);
+    console.log(`Server is running on port ${port}`);
 });
