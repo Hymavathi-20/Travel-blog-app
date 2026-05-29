@@ -1,8 +1,11 @@
 import express from "express";
 import bodyParser from "body-parser";
+import axios from "axios";
 
+// e62062d8596f51485690638ea805d536
 const app=express();
 const port=3000;
+const API="e62062d8596f51485690638ea805d536";
 
 const travelBlogs = [
   {
@@ -91,6 +94,68 @@ app.post("/editBlog",(req,res)=>{
     // res.render("index.ejs",{blogs:travelBlogs});
     res.redirect("/");
 });
+
+
+const getdate= ()=>{
+    const months=["Jan","Feb","March","April","May","June","July","Aug","Sep","Oct","Nov","Dec"];
+    const days=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+    let today=new Date();
+    let tdyday=days[today.getDay()];
+    let tdydate=today.getDate();
+    let mon=months[today.getMonth()];
+    return {
+        day:tdyday,
+        date:tdydate,
+        month :mon,
+        year:today.getFullYear()
+    };
+};
+
+app.get("/getWeather",(req,res)=>{
+    res.render("weather.ejs");
+})
+
+app.post("/getWeather", async(req,res)=>{
+    
+    try{
+        const place=req.body.place;
+        const response=await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${place}&appid=${API}&units=metric`);
+        const result=response.data;
+        //const imgURL=`https://openweathermap.org/img/wn/${icon}@2x.png`
+        const data={
+            img: `https://openweathermap.org/img/wn/${result.weather[0].icon}@2x.png` ,
+            temp:result.main.temp,
+            wind:result.wind.speed,
+            des:result.weather[0].description,
+            main:result.weather[0].main,
+            loc:result.name,
+            con:result.sys.country,
+            date: getdate()
+        };
+        //console.log(data);
+        res.render("weather.ejs",{weather:data});
+    }catch(error){
+        console.log(error);
+        console.log(error.response.data.message)
+        res.render("weather.ejs",{errormsg :error.response.data.message });
+    }
+    /*
+    const data={ 
+        img: "https://openweathermap.org/img/wn/04d@2x.png", 
+        temp: 30.24, 
+        wind: 4.63, 
+        des: 'overcast clouds', 
+        main: 'Clouds', 
+        loc: 'London',
+        con: 'GB', 
+        date: getdate()
+    };
+    // console.log(getdate());
+    // console.log(data.date);
+    res.render("weather.ejs",{weather:data}); 
+    */
+});
+
 
 app.listen(port,(req,res)=>{
     console.log(`Server is rumming on port ${port}`);

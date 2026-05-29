@@ -1,0 +1,42 @@
+<%- include("partials/header.ejs") %>
+
+    <h1 class="title">Weather Forecast</h1>
+    <div class="container">
+        <form action="/getWeather"  method="POST">
+            <p class="info">Get the weather of the place you wish to travel !
+            <br> Here search for the location you want to get weather forecast :</p>
+            <label>Location:</label><input type="text" name="place" placeholder="Search Location">
+            
+            <% if(locals.errormsg){  %> 
+                <div class="error"> <%= errormsg %>  </div>
+            <% } %>
+           
+            <button type="submit" value="getWeather">Get Weather</button>
+        </form>
+
+        <div class="report">
+            <% if(locals.weather){ %>
+                
+                <div class="rep">
+                    <div class="imgs">
+                        <div class="img"><img src="<%= weather.img %>" id="icon" alt="weather" ></div>
+                        
+                        <p id="des"> <%= weather.des %></p>
+                        <p id="loc"><i class="fa-solid fa-location-dot"></i> <%= weather.loc +","+ weather.con %> </p>
+                    </div>
+                    <div class="temp">
+                        <span id="temperature"> <%= weather.temp %>  </span>°C <br/><br/>
+                        <p id="day"> <%= weather.date.day %> </p>
+                        <p id="datemon" > <%= weather.date.date +","+weather.date.month %></p>
+                        <p id="main"> <%= weather.main %></p>
+                        <p id="wind"> Wind Speed: <%= weather.wind %> m/s</p>
+                    </div>
+                    
+                </div>
+            <% }else{ %>
+                <img src="images/worldweather.jpg" alt="worldweather" id="world">
+            <% } %>
+        </div>
+    </div>
+    
+<%- include("partials/footer.ejs") %>
